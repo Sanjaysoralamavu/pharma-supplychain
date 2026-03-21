@@ -1,0 +1,21 @@
+{
+  "name": "pharma-supplychain-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "ethers": "^5.7.2",
+    "react-hot-toast": "^2.4.1",
+    "react-qr-code": "^2.0.12"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "browserslist": {
+    "production": [">0.2%"],
+    "development": ["last 1 chrome version"]
+  }
+}
