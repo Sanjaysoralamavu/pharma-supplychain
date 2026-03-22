@@ -1,15 +1,18 @@
 /* ── Base ─────────────────────────────────────────────────────────────── */
 :root {
-  --bg: #0a0e1a;
-  --surface: #111827;
-  --surface2: #1a2235;
-  --border: #1e293b;
-  --text: #e2e8f0;
-  --muted: #64748b;
-  --accent: #3b82f6;
-  --accent2: #06b6d4;
-  --danger: #ef4444;
-  --success: #22c55e;
+  --bg: #05070d;
+  --surface: #0f172a;
+  --surface2: #111c2e;
+  --border: #1f2a44;
+  --text: #e6edf3;
+  --muted: #7c8aa5;
+
+  --accent: #00f5d4;     /* neon cyan */
+  --accent2: #3b82f6;    /* electric blue */
+
+  --danger: #ff4d6d;
+  --success: #00ff9c;
+
   --radius: 10px;
   --font: "IBM Plex Mono", "Courier New", monospace;
 }
