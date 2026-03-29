@@ -10,19 +10,28 @@ contract PharmaSupplyChain {
 
     // ─── Roles ────────────────────────────────────────────────────────────────
 
+    /// @dev Defines all participant roles in the supply chain
     enum Role { None, Manufacturer, Distributor, Pharmacy, Regulator }
 
+    /// @dev Stores role assigned to each address
     mapping(address => Role) public roles;
+
+    /// @dev Admin address (contract deployer)
     address public admin;
 
+    /// @dev Restricts access to admin only
     modifier onlyAdmin() {
         require(msg.sender == admin, "Not admin");
         _;
     }
+
+    /// @dev Restricts access to a specific role
     modifier onlyRole(Role r) {
         require(roles[msg.sender] == r, "Unauthorized role");
         _;
     }
+
+    /// @dev Restricts access to supply chain actors (manufacturer, distributor, pharmacy)
     modifier onlySupplyChain() {
         Role r = roles[msg.sender];
         require(
@@ -34,8 +43,10 @@ contract PharmaSupplyChain {
 
     // ─── Data Structures ──────────────────────────────────────────────────────
 
+    /// @dev Represents lifecycle status of a drug batch
     enum Status { Manufactured, InTransit, AtPharmacy, Dispensed, Recalled }
 
+    /// @dev Represents one step/event in the supply chain history
     struct CustodyEvent {
         address actor;
         Status  status;
@@ -43,6 +54,7 @@ contract PharmaSupplyChain {
         uint256 timestamp;
     }
 
+    /// @dev Stores all data related to a pharmaceutical batch
     struct DrugBatch {
         string   batchId;
         string   drugName;
@@ -56,20 +68,35 @@ contract PharmaSupplyChain {
         bool     recalled;
     }
 
+    /// @dev Maps batch ID to batch data
     mapping(string => DrugBatch)      public batches;
+
+    /// @dev Maps batch ID to full custody history
     mapping(string => CustodyEvent[]) public custodyHistory;
+
+    /// @dev Stores all registered batch IDs
     string[] public allBatchIds;
 
     // ─── Events ───────────────────────────────────────────────────────────────
 
+    /// @dev Emitted when a batch is registered
     event BatchRegistered(string indexed batchId, string drugName, string ndcCode, address manufacturer, uint256 timestamp);
+
+    /// @dev Emitted when custody is transferred
     event CustodyTransferred(string indexed batchId, address indexed from, address indexed to, string location, uint256 timestamp);
+
+    /// @dev Emitted when status changes
     event StatusUpdated(string indexed batchId, Status newStatus, uint256 timestamp);
+
+    /// @dev Emitted when a batch is recalled
     event BatchRecalled(string indexed batchId, string reason, address regulator, uint256 timestamp);
+
+    /// @dev Emitted when a role is assigned
     event RoleAssigned(address indexed account, Role role);
 
     // ─── Constructor ──────────────────────────────────────────────────────────
 
+    /// @dev Initializes contract and assigns deployer as regulator
     constructor() {
         admin = msg.sender;
         roles[msg.sender] = Role.Regulator;
@@ -77,6 +104,7 @@ contract PharmaSupplyChain {
 
     // ─── Admin ────────────────────────────────────────────────────────────────
 
+    /// @dev Assigns a role to an address (only admin)
     function assignRole(address account, Role role) external onlyAdmin {
         roles[account] = role;
         emit RoleAssigned(account, role);
@@ -84,6 +112,7 @@ contract PharmaSupplyChain {
 
     // ─── Manufacturer ─────────────────────────────────────────────────────────
 
+    /// @dev Registers a new drug batch and creates first history record
     function registerBatch(
         string calldata batchId,
         string calldata drugName,
@@ -120,6 +149,7 @@ contract PharmaSupplyChain {
 
     // ─── Transfer Custody ─────────────────────────────────────────────────────
 
+    /// @dev Transfers ownership/custody of a batch and records history
     function transferCustody(
         string calldata batchId,
         address to,
@@ -156,6 +186,7 @@ contract PharmaSupplyChain {
 
     // ─── Pharmacy ─────────────────────────────────────────────────────────────
 
+    /// @dev Marks batch as dispensed when it reaches pharmacy
     function markDispensed(string calldata batchId) external onlyRole(Role.Pharmacy) {
         DrugBatch storage batch = batches[batchId];
         require(batch.exists, "Batch not found");
@@ -177,6 +208,7 @@ contract PharmaSupplyChain {
 
     // ─── Regulator ────────────────────────────────────────────────────────────
 
+    /// @dev Allows regulator to recall a batch and update status/history
     function recallBatch(
         string calldata batchId,
         string calldata reason
@@ -200,20 +232,24 @@ contract PharmaSupplyChain {
 
     // ─── Views ────────────────────────────────────────────────────────────────
 
+    /// @dev Returns batch details
     function getBatch(string calldata batchId) external view returns (DrugBatch memory) {
         require(batches[batchId].exists, "Batch not found");
         return batches[batchId];
     }
 
+    /// @dev Returns full custody history
     function getCustodyHistory(string calldata batchId) external view returns (CustodyEvent[] memory) {
         require(batches[batchId].exists, "Batch not found");
         return custodyHistory[batchId];
     }
 
+    /// @dev Returns all batch IDs
     function getAllBatchIds() external view returns (string[] memory) {
         return allBatchIds;
     }
 
+    /// @dev Verifies batch validity (not recalled and not expired)
     function verifyBatch(string calldata batchId)
         external view
         returns (bool isValid, bool isRecalled, bool isExpired)

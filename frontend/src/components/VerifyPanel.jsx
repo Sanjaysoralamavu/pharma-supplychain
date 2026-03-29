@@ -46,9 +46,21 @@ export default function VerifyPanel({ contract }) {
             <div>Status: <span style={{color: STATUS_COLORS[result.batch.status]}}>{STATUS_NAMES[result.batch.status]}</span></div>
             <div>Expiry: {new Date(Number(result.batch.expiryDate)*1000).toLocaleDateString()}</div>
             {result.batch.ipfsCertCID && (
-              <a href={`https://ipfs.io/ipfs/${result.batch.ipfsCertCID}`} target="_blank" rel="noreferrer" className="ipfs-link">
-                View Certificate of Analysis ↗
-              </a>
+              <div style={{marginTop: "10px", padding: "8px 12px", background: "#0f2a1a", borderRadius: "6px", border: "1px solid #22c55e33"}}>
+                <div style={{fontSize: "11px", color: "#888", marginBottom: "4px"}}>Certificate of Analysis (IPFS)</div>
+                <a
+                  href={`https://ipfs.io/ipfs/${result.batch.ipfsCertCID}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ipfs-link"
+                  style={{color: "#22c55e", fontSize: "13px", wordBreak: "break-all"}}
+                >
+                  View Certificate of Analysis ↗
+                </a>
+                <div style={{fontSize: "10px", color: "#555", marginTop: "4px", fontFamily: "monospace", wordBreak: "break-all"}}>
+                  CID: {result.batch.ipfsCertCID}
+                </div>
+              </div>
             )}
           </div>
           <div className="verify-history">
@@ -60,6 +72,26 @@ export default function VerifyPanel({ contract }) {
                   <div className="tl-status">{STATUS_NAMES[evt.status]}</div>
                   <div className="tl-location">{evt.location}</div>
                   <div className="tl-time">{new Date(Number(evt.timestamp)*1000).toLocaleString()}</div>
+                  {i === 0 && result.batch.ipfsCertCID && (
+                    <a
+                      href={`https://ipfs.io/ipfs/${result.batch.ipfsCertCID}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        display: "inline-block",
+                        marginTop: "6px",
+                        fontSize: "11px",
+                        color: "#22c55e",
+                        background: "#0f2a1a",
+                        padding: "3px 8px",
+                        borderRadius: "4px",
+                        border: "1px solid #22c55e44",
+                        textDecoration: "none"
+                      }}
+                    >
+                      Certificate of Analysis ↗
+                    </a>
+                  )}
                 </div>
               </div>
             ))}

@@ -10,6 +10,63 @@ PharmaChain tracks medicine from the factory to the pharmacy using blockchain. E
 
 ---
 
+## Smart Contract Design Submission
+
+This repository contains the full PharmaChain project.  
+For this milestone, the primary focus is the smart contract located at:
+
+contracts/PharmaSupplyChain.sol
+
+The smart contract implements:
+- Drug batch registration  
+- Custody and ownership transfer  
+- Status tracking across lifecycle stages  
+- Regulatory recall functionality  
+- Provenance history tracking  
+- Role-based access control (RBAC)  
+- Batch verification  
+
+---
+
+## Smart Contract Overview
+
+### Stakeholder Roles
+- Manufacturer – registers drug batches  
+- Distributor – transfers batches through logistics  
+- Pharmacy – receives and dispenses batches  
+- Regulator – issues recalls and audits the system  
+
+### Core Data Structures
+- DrugBatch – stores batch details (ID, name, owner, status, expiry, etc.)  
+- CustodyEvent – records each supply chain event (actor, status, location, timestamp)  
+
+### Lifecycle States
+- Manufactured  
+- InTransit  
+- AtPharmacy  
+- Dispensed  
+- Recalled  
+
+### Key Functions
+- assignRole(address, Role) – assigns roles  
+- registerBatch(...) – registers a new batch  
+- transferCustody(...) – transfers ownership  
+- markDispensed(...) – marks as dispensed  
+- recallBatch(...) – recalls a batch  
+- getBatch(...) – retrieves batch details  
+- getCustodyHistory(...) – returns full history  
+- verifyBatch(...) – checks validity, recall status, expiry  
+
+### Events
+- BatchRegistered  
+- CustodyTransferred  
+- StatusUpdated  
+- BatchRecalled  
+- RoleAssigned  
+
+--- 
+
+
 ## Prerequisites
 
 Install the following before anything else.
@@ -37,7 +94,7 @@ Go to https://metamask.io/download and install for Chrome. Follow the setup wiza
 ## Step 1 - Download the Project
 
 ```
-git clone https://github.com/YOUR_REPO_LINK_HERE
+git clone https://github.com/Sanjaysoralamavu/pharma-supplychain.git
 cd pharma-supplychain
 ```
 
@@ -325,6 +382,12 @@ Test Network      | Hardhat Local / Sepolia
 
 ## Team
 
-CSE540 - Project 1
-Group: [Your Group Name]
-Members: [List your team members here]
+CSE540 - Project 1  
+
+Krithika A Hegde – 1237268229 – khegde12@asu.edu  
+Durgashivani Sivabalan – 1237588861 – dsivabal@asu.edu  
+Sanjay Soralamavu – 1237442598 – sanjayso@asu.edu  
+Vibha Govin Satish – 1237461851 – vsatish2@asu.edu  
+Vivek Vidyadhar Kamath – 1237967460 – vkamath4@asu.edu  
+
+---
