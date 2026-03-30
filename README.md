@@ -10,10 +10,10 @@ PharmaChain tracks medicine from the factory to the pharmacy using blockchain. E
 
 ---
 
-## Smart Contract Design Submission
+## Smart Contract Design
 
 This repository contains the full PharmaChain project.  
-For this milestone, the primary focus is the smart contract located at:
+The smart contract located at:
 
 contracts/PharmaSupplyChain.sol
 
